@@ -8,7 +8,7 @@ before_script:
 
 script:
   - ./gradlew check
-  - ./gradlew test
+  #- ./gradlew test
 
-#after_success:
-#  - bash <(curl -s https://codecov.io/bash)
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
