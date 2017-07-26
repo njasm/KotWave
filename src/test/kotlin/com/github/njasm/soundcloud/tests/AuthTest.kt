@@ -8,6 +8,7 @@ import com.github.njasm.soundcloud.Auth
 import com.github.njasm.soundcloud.Token
 import org.junit.Before
 import org.junit.Test
+import java.util.*
 
 class AuthTest {
 
@@ -20,8 +21,19 @@ class AuthTest {
     }
 
     @Test
-    fun scopeIsEmpty()
+    fun scopeIsEmpty() = assert(t.tokenScope == "")
+
+    @Test
+    fun tokenExpiredFalse() = assert(!t.isTokenExpired())
+
+    @Test
+    fun tokenExpiredTrue()
     {
-        assert(t.tokenScope == "")
+        val rt = "r"
+        var a = Auth(Token("a", "*", 1, rt))
+        Thread.sleep(2000)
+
+        assert(a.isTokenExpired())
+        assert(rt == a.refreshToken!!)
     }
 }

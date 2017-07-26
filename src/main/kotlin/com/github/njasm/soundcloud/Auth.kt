@@ -21,9 +21,9 @@ internal class Auth
     val refreshToken
         get() = this.token.refresh_token
 
-    constructor(token : Token, date : Calendar = Calendar.getInstance()) {
+    constructor(token : Token) {
         this.token = token
-        this.dataDate = date
+        this.dataDate = Calendar.getInstance()
     }
 
     fun addOauthHeader(req: Request) {
@@ -33,22 +33,16 @@ internal class Auth
     }
 
     fun isTokenExpired() : Boolean {
-        var result = false
-        with (this) {
-            val expires = getExpiresIn()
-            when(expires) {
-                null -> return result
-                else -> {
-                    this.dataDate.add(Calendar.SECOND, expires!!)
-                    result = this.dataDate >= Calendar.getInstance()
-                }
+        when(this.getExpiresIn()) {
+            null -> return false
+            else -> {
+                dataDate.add(Calendar.SECOND, getExpiresIn()!!)
+                return dataDate.compareTo(Calendar.getInstance()) <= 0
             }
         }
-
-        return result
     }
 
-    private fun getExpiresIn() : Int? = this.token?.expires_in
+    private fun getExpiresIn() : Int? = this.token.expires_in
 }
 
 internal data class Token(
