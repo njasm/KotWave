@@ -169,7 +169,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     fun connectionsOf(userId: Int) : Array<Connection>
     {
         throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
-        val fullUrl = API_BASE_URL.pathCombine(API_USERS_RESOURCE, userId, API_USER_SUB_CONNECTIONS_RESOURCE)
+        val fullUrl = API_BASE_URL.pathCombine(API_CONNECTIONS_RESOURCE)
         val (_, _, result) = this.get(fullUrl)
         val c = processResponseString(result, Array<Connection>::class.java)
         c.forEach { it.client = this }
@@ -193,6 +193,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     private inline fun <reified T : Any, V : Any, E : Exception> processResponseString(result: Result<V, E>,
                                                                                  returnType: Class<T>) : T
     {
+        println(result.get().toString())
         return when (result) {
             is Result.Failure -> throw result.error
             is Result.Success -> fromJson(result.value.toString().toByteArray(), returnType)

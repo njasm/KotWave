@@ -24,11 +24,4 @@ class AuthTest {
     {
         assert(t.tokenScope == "")
     }
-
-    @Test
-    fun setScope()
-    {
-        val scope = "*"
-        assert(t.tokenScope == scope, { "Token Scope does not match" })
-    }
 }

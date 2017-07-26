@@ -50,7 +50,8 @@ class ClientTest : Base() {
         assert(comments.isNotEmpty())
     }
 
-    @Ignore("not yet ready") @Test
+    @Ignore("not yet ready")
+    @Test
     fun resolve()
     {
         val value = t.resolve("https://soundcloud.com/hybrid-species")

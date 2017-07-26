@@ -1,5 +1,6 @@
 package com.github.njasm.soundcloud.tests
 
+import org.junit.Ignore
 import org.junit.Test
 
 class UserTest : Base() {
@@ -49,6 +50,7 @@ class UserTest : Base() {
         assert(true)
     }
 
+    @Ignore("not yet ready")
     @Test
     fun connections()
     {
