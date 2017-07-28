@@ -10,13 +10,14 @@ import com.github.njasm.soundcloud.API_ME_RESOURCE
 import com.github.njasm.soundcloud.pathCombine
 import org.junit.Ignore
 import org.junit.Test
+import org.junit.Assert
 
 class ClientTest : Base() {
 
     @Test
     fun clientCredentialsAuthentication()
     {
-        assert(t.auth.accessToken.isNotEmpty())
+        Assert.assertTrue(t.auth.accessToken.isNotEmpty())
     }
 
     @Test
@@ -29,7 +30,7 @@ class ClientTest : Base() {
         println(user.username)
         println(user.uri)
 
-        assert(user.client.auth.accessToken.isNotEmpty())
+        Assert.assertTrue(user.client.auth.accessToken.isNotEmpty())
     }
 
     @Test
@@ -38,7 +39,7 @@ class ClientTest : Base() {
         val tracks = t.tracksOf(t.me().id)
         tracks.forEach { println("name: ${it.title}") }
 
-        assert(tracks.isNotEmpty())
+        Assert.assertTrue(tracks.isNotEmpty())
     }
 
     @Test
@@ -47,7 +48,7 @@ class ClientTest : Base() {
         val comments = t.commentsOf(t.me().id)
         comments.forEach { println("name: ${it.body}") }
 
-        assert(comments.isNotEmpty())
+        Assert.assertTrue(comments.isNotEmpty())
     }
 
     @Ignore("not yet ready")
@@ -55,7 +56,7 @@ class ClientTest : Base() {
     fun resolve()
     {
         val value = t.resolve("https://soundcloud.com/hybrid-species")
-        assert(value != null)
+        Assert.assertNotNull(value)
     }
 
 
@@ -70,7 +71,7 @@ class ClientTest : Base() {
                     println("key: ${it.key}, value: ${it.value}")
                 }
 
-                assert(response.httpResponseHeaders.isNotEmpty())
+                Assert.assertTrue(response.httpResponseHeaders.isNotEmpty())
             }
         }
     }
