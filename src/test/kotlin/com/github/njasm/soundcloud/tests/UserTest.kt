@@ -51,6 +51,15 @@ class UserTest : Base() {
         Assert.assertTrue(true)
     }
 
+    @Test
+    fun apps()
+    {
+        val apps = t.me().apps()
+        apps.forEach { println("name: ${it.name}") }
+
+        Assert.assertTrue(true)
+    }
+
     @Ignore("not yet ready")
     @Test
     fun connections()

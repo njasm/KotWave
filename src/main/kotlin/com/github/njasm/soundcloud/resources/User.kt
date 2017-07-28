@@ -83,6 +83,11 @@ class User : Resource() {
         return this.client.connectionsOf(this.id)
     }
 
+    fun apps() : Array<App> {
+        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+        return this.client.appsOf(this.id)
+    }
+
     fun playlists() = Unit
 }
 

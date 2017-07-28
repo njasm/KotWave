@@ -177,6 +177,17 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return c
     }
 
+    fun appsOf(userId : Int) : Array<App>
+    {
+        throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
+        val fullUrl = API_BASE_URL.pathCombine(API_APPS_RESOURCE)
+        val (_, _, result) = this.get(fullUrl)
+        val a = processResponseString(result, Array<App>::class.java)
+        a.forEach { it.client = this }
+
+        return a
+    }
+
     fun resolve(uri: String) : String?
     {
         val fullUrl = API_BASE_URL.pathCombine(API_RESOLVE_RESOURCE)
