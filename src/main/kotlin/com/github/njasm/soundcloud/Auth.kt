@@ -20,7 +20,9 @@ internal class Auth(internal var token: Token) {
         get() = this.token.refresh_token
 
     fun addOauthHeader(req: Request) {
-        if (this.token.access_token.isNotEmpty() && !req.httpHeaders.containsKey("Authorization")) {
+        if (this.token.access_token.isNotEmpty()
+                && !req.httpHeaders.containsKey("Authorization")
+                && !isTokenExpired()) {
             req.header("Authorization" to "OAuth " + this.token.access_token.trim())
         }
     }

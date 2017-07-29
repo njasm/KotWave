@@ -70,6 +70,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         val req = url.httpGet(params?.toList())
         req.header("Accept" to "application/json")
         headers?.forEach { req.header(it) }
+        guardAgainstExpiredToken()
         auth.addOauthHeader(req)
 
         return doRequest(req)
@@ -81,6 +82,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     {
         val req = url.httpPost()
         headers?.forEach { req.header(it) }
+        guardAgainstExpiredToken()
         auth.addOauthHeader(req)
 
         val strBody = params.getBodyOr("")
@@ -93,6 +95,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     fun head(url: String, headers: MutableSet<Pair<String, String>>? = null) : Triple<Request, Response, Result<String, FuelError>>
         = url.httpHead().let { req ->
             headers?.forEach { h -> req.header(h) }
+            guardAgainstExpiredToken()
             auth.addOauthHeader(req)
             return doRequest(req)
         }
@@ -208,5 +211,8 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
             is Result.Success -> fromJson(result.value.toString().toByteArray(), returnType)
         }
     }
+
+    private fun guardAgainstExpiredToken() =
+            if (auth.isTokenExpired()) refreshAccessToken(null) else Unit
 
 }
