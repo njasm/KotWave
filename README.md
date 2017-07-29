@@ -8,6 +8,7 @@ Work in progress, still under heavy development, not production ready code.
 
 * User Authorization/Authentication
 * User Credentials Flow Authentication
+* Automatic Refresh token if the token being used expires
 * ...
 
 #### Code examples
