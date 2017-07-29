@@ -201,6 +201,10 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         }
     }
 
+    fun factoryTrack() : Track = (Track()).let { it.client = this; return it }
+    fun factoryComment() : Comment = (Comment()).let { it.client = this; return it }
+    fun factoryConnection() : Comment = (Comment()).let { it.client = this; return it }
+
     private inline fun <reified T : Any, V : Any, E : Exception> processResponseString(result: Result<V, E>,
                                                                                  returnType: Class<T>) : T
     {

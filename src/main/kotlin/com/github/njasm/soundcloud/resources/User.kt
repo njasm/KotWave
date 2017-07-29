@@ -39,9 +39,9 @@ class User : Resource() {
     @SerializedName("avatar_data")
     lateinit var avatarData : String               // 	WO 	binary data of user avatar 	(only for uploading)
 
-    override fun save() = Unit
+    override fun save() = throw UnsupportedOperationException("")
+    override fun delete() = throw UnsupportedOperationException("")
     override fun update() = Unit
-    override fun delete() = Unit
 
     fun tracks() : Array<Track> {
         throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}

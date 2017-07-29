@@ -7,10 +7,8 @@ package com.github.njasm.soundcloud
 import com.github.kittinunf.fuel.core.Request
 import java.util.*
 
-internal class Auth
-{
-    internal var token : Token
-    internal var dataDate : Calendar
+internal class Auth(internal var token: Token) {
+    internal var dataDate : Calendar = Calendar.getInstance()
 
     val accessToken
         get() = this.token.access_token
@@ -20,11 +18,6 @@ internal class Auth
 
     val refreshToken
         get() = this.token.refresh_token
-
-    constructor(token : Token) {
-        this.token = token
-        this.dataDate = Calendar.getInstance()
-    }
 
     fun addOauthHeader(req: Request) {
         if (this.token.access_token.isNotEmpty() && !req.httpHeaders.containsKey("Authorization")) {
@@ -43,6 +36,7 @@ internal class Auth
     }
 
     private fun getExpiresIn() : Int? = this.token.expires_in
+
 }
 
 internal data class Token(

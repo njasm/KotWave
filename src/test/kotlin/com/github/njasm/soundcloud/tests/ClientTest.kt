@@ -21,6 +21,22 @@ class ClientTest : Base() {
     }
 
     @Test
+    fun factoryMethods()
+    {
+        val track = t.factoryTrack()
+        val conn = t.factoryConnection()
+        val com = t.factoryComment()
+
+        Assert.assertNotNull(track)
+        Assert.assertNotNull(conn)
+        Assert.assertNotNull(com)
+
+        Assert.assertEquals(track.client, t)
+        Assert.assertEquals(conn.client, t)
+        Assert.assertEquals(com.client, t)
+    }
+
+    @Test
     fun getMe()
     {
         val user = t.me()
