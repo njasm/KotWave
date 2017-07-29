@@ -17,5 +17,7 @@ open class Base {
 
         t = Client(clientID, clientSecret)
         t.clientCredentialsAuthentication(username, password)
+
+        Thread.sleep(2000L)
     }
 }
