@@ -7,13 +7,13 @@ package com.github.njasm.soundcloud
 import com.github.njasm.soundcloud.resources.*
 
 import com.github.kittinunf.fuel.core.FuelError
-import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpHead
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.result.Result
+import com.github.njasm.soundcloud.resources.utils.UserCollection
 
 class Client(val clientID: String, val secret: String, val callback: String = "") {
 
