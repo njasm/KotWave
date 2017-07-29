@@ -41,24 +41,18 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     }
 
     fun refreshAccessToken(refreshToken : String?) {
-//        val body = mutableSetOf(
-//                "grant_type" to "refresh_token",
-//                "redirect_uri" to callback,
-//                "client_id" to clientID,
-//                "client_secret" to secret,
-//                "refresh_token" to (if (refreshToken != null) refreshToken!! else auth.refreshToken!!))
-//
-//        val header = mutableSetOf("Content-Type" to "application/x-www-form-urlencoded")
-//        val (request, response, result) = this.post(API_BASE_URL.pathCombine(API_TOKEN_PATH), body, header)
-//
-//        when (result) {
-//            is Result.Failure -> throw result.error
-//            is Result.Success -> {
-//                lastRequest = request
-//                lastResponse = response
-//                println(response.data.toString(Charsets.UTF_8))
-//            }
-//        }
+        val body = mutableSetOf(
+                "grant_type" to "refresh_token",
+                "redirect_uri" to callback,
+                "client_id" to clientID,
+                "client_secret" to secret,
+                "refresh_token" to (refreshToken ?: auth.refreshToken.orEmpty()))
+
+        val header = mutableSetOf("Content-Type" to "application/x-www-form-urlencoded")
+        val (_, _, result) = this.post(API_BASE_URL.pathCombine(API_TOKEN_PATH), body, header)
+
+        val newToken = processResponseString(result, Token::class.java)
+        auth.token = newToken
     }
 
     fun me() : User {

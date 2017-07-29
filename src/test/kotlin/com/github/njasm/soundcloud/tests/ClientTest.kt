@@ -21,6 +21,28 @@ class ClientTest : Base() {
     }
 
     @Test
+    fun refreshToken()
+    {
+        val token = t.auth.accessToken
+        val rToken = t.auth.refreshToken
+
+        t.refreshAccessToken(rToken)
+
+        Assert.assertNotEquals(token, t.auth.accessToken)
+        Assert.assertNotEquals(rToken, t.auth.refreshToken)
+
+        val nToken = t.auth.accessToken
+        val nrToken = t.auth.refreshToken
+
+        t.refreshAccessToken(null)
+        Assert.assertNotEquals(nToken, t.auth.accessToken)
+        Assert.assertNotEquals(nrToken, t.auth.refreshToken)
+
+        Assert.assertNotEquals(token, nToken)
+        Assert.assertNotEquals(rToken, nrToken)
+    }
+
+    @Test
     fun factoryMethods()
     {
         val track = t.factoryTrack()
