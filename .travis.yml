@@ -7,8 +7,8 @@ before_script:
   - chmod +x gradlew
 
 script:
-  - ./gradlew check --stacktrace --debug
-  #- ./gradlew test
+  #- ./gradlew check --stacktrace --debug
+  - ./gradlew test --stacktrace --info
 
 after_success:
   - ./gradlew jacocoTestReport
