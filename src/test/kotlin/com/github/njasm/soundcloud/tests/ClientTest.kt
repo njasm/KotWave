@@ -40,6 +40,8 @@ class ClientTest : Base() {
 
         Assert.assertNotEquals(token, nToken)
         Assert.assertNotEquals(rToken, nrToken)
+
+        Thread.sleep(2_000)
     }
 
     @Test

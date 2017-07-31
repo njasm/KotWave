@@ -1,5 +1,6 @@
 package com.github.njasm.soundcloud.resources
 
+import com.github.kittinunf.result.Result
 import com.github.njasm.soundcloud.*
 import com.google.gson.annotations.SerializedName
 
@@ -62,6 +63,34 @@ class User : Resource() {
         throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
         return this.client.followersOf(this.id)
     }
+
+    fun follow(userId : Int)
+    {
+        throwIf<IllegalArgumentException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+        throwIf<IllegalArgumentException>("userId is not valid.") {userId <= 0}
+        val url = API_BASE_URL.pathCombine(API_USERS_RESOURCE, this.id, API_USER_SUB_FOLLOWERS_RESOURCE, userId)
+        val (_, _, result) = this.client.put(url)
+        when(result) {
+            is Result.Failure -> throw result.error
+            else -> return Unit
+        }
+    }
+
+//    fun unfollow(userId : Int)
+//    {
+//        throwIf<IllegalArgumentException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+//        throwIf<IllegalArgumentException>("userId is not valid.") {userId <= 0}
+//        val url = API_BASE_URL.pathCombine(API_USERS_RESOURCE, this.id, API_USER_SUB_FOLLOWERS_RESOURCE, userId)
+//        val (_, _, result) = this.client.delete(url)
+//        when(result) {
+//            is Result.Failure -> throw result.error
+//        }
+//    }
+//
+//    fun unfollow(user : User)
+//    {
+//
+//    }
 
     fun favorites() : Array<Track> {
         throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}

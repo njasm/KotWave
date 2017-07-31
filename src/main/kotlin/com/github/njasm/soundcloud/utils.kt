@@ -7,7 +7,7 @@ package com.github.njasm.soundcloud
 import com.google.gson.Gson
 import java.nio.charset.Charset
 
-fun getBody(params: MutableSet<Pair<String, String>>) : String {
+fun getBody(params: Set<Pair<String, Any>>) : String {
     val strBody = params.fold(String(),
             { acc : String, (first, second) ->
                 acc.plus(first).plus("=").plus(second).plus("&") })
@@ -15,8 +15,8 @@ fun getBody(params: MutableSet<Pair<String, String>>) : String {
     return strBody.substring(0, strBody.length - 1)
 }
 
-fun MutableSet<Pair<String, String>>?.getBodyOr(value : String)
-        = if (this != null && this.count() > 0) getBody(this) else value
+fun Set<Pair<String, Any>>.getBodyOr(value : String)
+        = if (this.count() > 0) getBody(this) else value
 
 fun String.pathCombine(vararg others : Any) : String {
     val combiner = "/"

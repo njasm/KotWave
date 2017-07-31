@@ -12,6 +12,7 @@ import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpHead
 import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.fuel.httpPut
 import com.github.kittinunf.result.Result
 import com.github.njasm.soundcloud.resources.utils.UserCollection
 
@@ -64,12 +65,15 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     }
 
     @JvmOverloads
-    fun get(url: String, params: MutableSet<Pair<String, Any>>? = null, headers: MutableSet<Pair<String, String>>? = null
+    fun get(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
     ) : Triple<Request, Response, Result<String, FuelError>>
     {
-        val req = url.httpGet(params?.toList())
-        req.header("Accept" to "application/json")
-        headers?.forEach { req.header(it) }
+        val req = url.httpGet(params.toList())
+        req.apply {
+            header("Accept" to "application/json")
+            headers.forEach { header(it) }
+        }
+
         guardAgainstExpiredToken()
         auth.addOauthHeader(req)
 
@@ -77,7 +81,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     }
 
     @JvmOverloads
-    fun post(url: String, params: MutableSet<Pair<String, String>>? = null, headers: MutableSet<Pair<String, String>>? = null
+    fun post(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
     ) : Triple<Request, Response, Result<String, FuelError>>
     {
         val req = url.httpPost()
@@ -92,11 +96,28 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     }
 
     @JvmOverloads
-    fun head(url: String, headers: MutableSet<Pair<String, String>>? = null) : Triple<Request, Response, Result<String, FuelError>>
-        = url.httpHead().let { req ->
-            headers?.forEach { h -> req.header(h) }
+    fun put(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
+    ) : Triple<Request, Response, Result<String, FuelError>>
+    {
+        val req = url.httpPut()
+        headers.forEach { req.header(it) }
+        guardAgainstExpiredToken()
+        auth.addOauthHeader(req)
+
+        val strBody = params.getBodyOr("")
+        req.body(strBody, Charsets.UTF_8)
+
+        return doRequest(req)
+    }
+
+    @JvmOverloads
+    fun head(url: String, headers: Set<Pair<String, Any>> = emptySet()
+    ) : Triple<Request, Response, Result<String, FuelError>> = url.httpHead().let { req ->
+
+            headers.forEach { h -> req.header(h) }
             guardAgainstExpiredToken()
             auth.addOauthHeader(req)
+
             return doRequest(req)
         }
 
