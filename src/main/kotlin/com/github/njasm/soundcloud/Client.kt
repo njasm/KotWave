@@ -25,7 +25,8 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
 
     constructor(clientID: String, secret: String) : this(clientID, secret, "")
 
-    fun clientCredentialsAuthentication(user: String, passwd: String) {
+    fun clientCredentialsAuthentication(user: String, passwd: String)
+    {
         val body = setOf(
                 "grant_type" to "password",
                 "scope" to "*",// "non-expiring",
@@ -41,7 +42,8 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         auth.token = newToken
     }
 
-    fun refreshAccessToken(refreshToken : String?) {
+    fun refreshAccessToken(refreshToken : String?)
+    {
         val body = setOf(
                 "grant_type" to "refresh_token",
                 "redirect_uri" to callback,
@@ -56,7 +58,8 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         auth.token = newToken
     }
 
-    fun me() : User {
+    fun me() : User
+    {
         val (_, _, result) = this.get(API_BASE_URL.pathCombine(API_ME_RESOURCE))
         val u = processResponseString(result, User::class.java)
         u.client = this
@@ -248,11 +251,14 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     fun factoryComment() : Comment = (Comment()).let { it.client = this; return it }
     fun factoryConnection() : Comment = (Comment()).let { it.client = this; return it }
 
-    private inline fun <reified T : Any, V : Any, E : Exception> processResponseString(result: Result<V, E>,
-                                                                                 returnType: Class<T>) : T
+    private inline fun <reified T : Any, V : Any, E : Exception>
+            processResponseString(result: Result<V, E>, returnType: Class<T>) : T
     {
         return when (result) {
-            is Result.Failure -> throw result.error
+            is Result.Failure -> {
+                println("ERROR HTTP RESPONSE BODY: ${lastResponse.data}")
+                throw result.error
+            }
             is Result.Success -> fromJson(result.value.toString().toByteArray(), returnType)
         }
     }
