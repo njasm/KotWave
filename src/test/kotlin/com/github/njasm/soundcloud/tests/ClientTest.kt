@@ -109,6 +109,7 @@ class ClientTest : Base() {
         Assert.assertNotNull(playlist)
     }
 
+    @Ignore("FIXME: lately and randomly we're getting {\"error\":\"invalid_grant\"} for this test")
     @Test fun refreshToken()
     {
         val token = t.auth.accessToken
