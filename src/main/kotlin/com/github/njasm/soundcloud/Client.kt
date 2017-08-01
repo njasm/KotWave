@@ -29,7 +29,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     {
         val body = setOf(
                 "grant_type" to "password",
-                "scope" to "*",// "non-expiring",
+                "scope" to "non-expiring", // "*",
                 "username" to user,
                 "password" to passwd,
                 "client_id" to this.clientID,
