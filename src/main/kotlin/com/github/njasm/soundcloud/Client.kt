@@ -256,7 +256,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     {
         return when (result) {
             is Result.Failure -> {
-                println("ERROR HTTP RESPONSE BODY: ${lastResponse.data}")
+                println("ERROR HTTP RESPONSE BODY: ${lastResponse.data.toString(Charsets.UTF_8)}")
                 throw result.error
             }
             is Result.Success -> fromJson(result.value.toString().toByteArray(), returnType)
