@@ -209,7 +209,14 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         val url = API_BASE_URL.pathCombine(API_USERS_RESOURCE, userId, API_PLAYLISTS_RESOURCE)
         val (_, _, result) = get(url)
 
-        return processResponseString(result, Array<Playlist>::class.java)
+        val pList = processResponseString(result, Array<Playlist>::class.java)
+        pList.forEach { p ->
+            p.client = this
+            p.user.client = this
+            p.tracks.forEach { t -> t.client = this }
+        }
+
+        return pList
     }
 
     fun playlistOf(playlistId : Int) : Playlist?
@@ -218,7 +225,10 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         val url = API_BASE_URL.pathCombine(API_PLAYLISTS_RESOURCE, playlistId)
         val (_, _, result) = get(url)
 
-        return processResponseString(result, Playlist::class.java)
+        val p = processResponseString(result, Playlist::class.java)
+        p.let { it.client = this }
+
+        return p
     }
 
     fun resolve(uri: String) : String?

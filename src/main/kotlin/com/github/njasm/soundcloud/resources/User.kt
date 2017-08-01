@@ -64,6 +64,11 @@ class User : Resource() {
         return this.client.followersOf(this.id)
     }
 
+    fun playlists() : Array<Playlist> {
+        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+        return this.client.playlistsOf(this.id)
+    }
+
     fun follow(userId : Int)
     {
         throwIf<IllegalArgumentException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
@@ -106,8 +111,6 @@ class User : Resource() {
         throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
         return this.client.appsOf(this.id)
     }
-
-    fun playlists() = Unit
 }
 
 /*

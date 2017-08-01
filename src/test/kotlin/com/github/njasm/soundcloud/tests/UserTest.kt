@@ -71,4 +71,11 @@ class UserTest : Base() {
 
         Assert.assertTrue(true)
     }
+
+    @Test
+    fun playlists()
+    {
+        val playlists = t.me().playlists()
+        Assert.assertTrue(playlists.isNotEmpty())
+    }
 }
