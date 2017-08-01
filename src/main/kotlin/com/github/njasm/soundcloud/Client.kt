@@ -26,7 +26,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     constructor(clientID: String, secret: String) : this(clientID, secret, "")
 
     fun clientCredentialsAuthentication(user: String, passwd: String) {
-        val body = mutableSetOf(
+        val body = setOf(
                 "grant_type" to "password",
                 "scope" to "*",// "non-expiring",
                 "username" to user,
@@ -34,7 +34,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
                 "client_id" to this.clientID,
                 "client_secret" to this.secret)
 
-        val header = mutableSetOf("Content-Type" to "application/x-www-form-urlencoded")
+        val header = setOf("Content-Type" to "application/x-www-form-urlencoded")
         val (_, _, result) = this.post(API_BASE_URL.pathCombine(API_TOKEN_PATH), body, header)
 
         val newToken = processResponseString(result, Token::class.java)
@@ -42,14 +42,14 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     }
 
     fun refreshAccessToken(refreshToken : String?) {
-        val body = mutableSetOf(
+        val body = setOf(
                 "grant_type" to "refresh_token",
                 "redirect_uri" to callback,
                 "client_id" to clientID,
                 "client_secret" to secret,
                 "refresh_token" to (refreshToken ?: auth.refreshToken.orEmpty()))
 
-        val header = mutableSetOf("Content-Type" to "application/x-www-form-urlencoded")
+        val header = setOf("Content-Type" to "application/x-www-form-urlencoded")
         val (_, _, result) = this.post(API_BASE_URL.pathCombine(API_TOKEN_PATH), body, header)
 
         val newToken = processResponseString(result, Token::class.java)
@@ -80,12 +80,11 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return doRequest(req)
     }
 
-    @JvmOverloads
     fun post(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
     ) : Triple<Request, Response, Result<String, FuelError>>
     {
         val req = url.httpPost()
-        headers?.forEach { req.header(it) }
+        headers.forEach { req.header(it) }
         guardAgainstExpiredToken()
         auth.addOauthHeader(req)
 
@@ -95,7 +94,6 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return doRequest(req)
     }
 
-    @JvmOverloads
     fun put(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
     ) : Triple<Request, Response, Result<String, FuelError>>
     {
@@ -110,7 +108,6 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return doRequest(req)
     }
 
-    @JvmOverloads
     fun head(url: String, headers: Set<Pair<String, Any>> = emptySet()
     ) : Triple<Request, Response, Result<String, FuelError>> = url.httpHead().let { req ->
 
@@ -206,6 +203,24 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return a
     }
 
+    fun playlistsOf(userId : Int) : Array<Playlist>
+    {
+        throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
+        val url = API_BASE_URL.pathCombine(API_USERS_RESOURCE, userId, API_PLAYLISTS_RESOURCE)
+        val (_, _, result) = get(url)
+
+        return processResponseString(result, Array<Playlist>::class.java)
+    }
+
+    fun playlistOf(playlistId : Int) : Playlist?
+    {
+        throwIf<IllegalArgumentException>("Playlist ID cannot be negative or zero.") { playlistId <= 0 }
+        val url = API_BASE_URL.pathCombine(API_PLAYLISTS_RESOURCE, playlistId)
+        val (_, _, result) = get(url)
+
+        return processResponseString(result, Playlist::class.java)
+    }
+
     fun resolve(uri: String) : String?
     {
         val fullUrl = API_BASE_URL.pathCombine(API_RESOLVE_RESOURCE)
@@ -226,7 +241,6 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     private inline fun <reified T : Any, V : Any, E : Exception> processResponseString(result: Result<V, E>,
                                                                                  returnType: Class<T>) : T
     {
-        println(result.get().toString())
         return when (result) {
             is Result.Failure -> throw result.error
             is Result.Success -> fromJson(result.value.toString().toByteArray(), returnType)
@@ -235,5 +249,4 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
 
     private fun guardAgainstExpiredToken() =
             if (auth.isTokenExpired()) refreshAccessToken(null) else Unit
-
 }

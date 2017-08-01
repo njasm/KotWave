@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 class User : Resource() {
 
-    internal val id : Int = 0
+    val id : Int = 0
     lateinit var permalink : String
     lateinit var username : String
     lateinit var uri : String

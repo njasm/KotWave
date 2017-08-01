@@ -8,6 +8,7 @@ import com.github.kittinunf.result.Result
 import com.github.njasm.soundcloud.API_BASE_URL
 import com.github.njasm.soundcloud.API_ME_RESOURCE
 import com.github.njasm.soundcloud.pathCombine
+import com.github.njasm.soundcloud.resources.Track
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.Assert
@@ -114,5 +115,32 @@ class ClientTest : Base() {
                 Assert.assertTrue(response.httpResponseHeaders.isNotEmpty())
             }
         }
+    }
+
+    @Test
+    fun userPlaylists()
+    {
+        val uId = t.me().id
+        val list = t.playlistsOf(uId)
+        list.forEach {
+            println("track count #" + it.trackCount)
+            println("playlist id #" + it.id)
+            Assert.assertEquals(uId, it.user.id)
+        }
+
+        Assert.assertTrue(list.isNotEmpty())
+    }
+
+    @Test
+    fun playlistbyId()
+    {
+        val pId = 116663048
+        val playlist = t.playlistOf(pId)
+        playlist?.let {
+            println("track count #" + it.trackCount)
+            Assert.assertEquals(pId, it.id)
+        }
+
+        Assert.assertNotNull(playlist)
     }
 }

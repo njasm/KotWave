@@ -19,15 +19,18 @@ internal class Auth(internal var token: Token) {
     val refreshToken
         get() = this.token.refresh_token
 
-    fun addOauthHeader(req: Request) {
-        if (this.token.access_token.isNotEmpty()
-                && !req.httpHeaders.containsKey("Authorization")
-                && !isTokenExpired()) {
-            req.header("Authorization" to "OAuth " + this.token.access_token.trim())
+    fun addOauthHeader(req: Request)
+    {
+        if (tokenIsNotEmpty()
+            && !req.httpHeaders.containsKey("Authorization")
+            && !isTokenExpired())
+        {
+            req.header("Authorization" to "OAuth " + this.accessToken.trim())
         }
     }
 
-    fun isTokenExpired() : Boolean {
+    fun isTokenExpired() : Boolean
+    {
         when(this.getExpiresIn()) {
             null -> return false
             else -> {
@@ -38,6 +41,7 @@ internal class Auth(internal var token: Token) {
     }
 
     private fun getExpiresIn() : Int? = this.token.expires_in
+    private fun tokenIsNotEmpty() : Boolean = this.accessToken.isNotEmpty()
 
 }
 
