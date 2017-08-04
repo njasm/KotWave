@@ -2,7 +2,7 @@
  * Created by njasm on 02/07/2017.
  */
 
-package com.github.njasm.soundcloud
+package com.github.njasm.kotwave
 
 import com.github.kittinunf.fuel.core.Request
 import java.util.*

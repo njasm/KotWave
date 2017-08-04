@@ -2,10 +2,10 @@
  * Created by njasm on 03/07/2017.
  */
 
-package com.github.njasm.soundcloud.tests
+package com.github.njasm.kotwave.tests
 
-import com.github.njasm.soundcloud.Auth
-import com.github.njasm.soundcloud.Token
+import com.github.njasm.kotwave.Auth
+import com.github.njasm.kotwave.Token
 import org.junit.Before
 import org.junit.Test
 import org.junit.Assert

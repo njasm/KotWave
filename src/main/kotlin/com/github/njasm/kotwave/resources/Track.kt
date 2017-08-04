@@ -1,4 +1,4 @@
-package com.github.njasm.soundcloud.resources
+package com.github.njasm.kotwave.resources
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,6 +1,6 @@
-package com.github.njasm.soundcloud.resources.utils
+package com.github.njasm.kotwave.resources.utils
 
-import com.github.njasm.soundcloud.resources.User
+import com.github.njasm.kotwave.resources.User
 import com.google.gson.annotations.SerializedName
 
 class UserCollection {

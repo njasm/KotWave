@@ -2,11 +2,11 @@
  * Created by njasm on 06/07/2017.
  */
 
-package com.github.njasm.soundcloud
+package com.github.njasm.kotwave
 
 import com.google.gson.Gson
 import java.nio.charset.Charset
-import com.github.njasm.soundcloud.resources.Resource
+import com.github.njasm.kotwave.resources.Resource
 
 fun getBody(params: Set<Pair<String, Any>>) : String
 {

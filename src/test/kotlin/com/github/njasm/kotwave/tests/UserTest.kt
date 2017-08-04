@@ -1,4 +1,4 @@
-package com.github.njasm.soundcloud.tests
+package com.github.njasm.kotwave.tests
 
 import org.junit.Ignore
 import org.junit.Test

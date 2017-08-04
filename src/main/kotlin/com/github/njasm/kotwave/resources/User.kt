@@ -1,7 +1,7 @@
-package com.github.njasm.soundcloud.resources
+package com.github.njasm.kotwave.resources
 
 import com.github.kittinunf.result.Result
-import com.github.njasm.soundcloud.*
+import com.github.njasm.kotwave.*
 import com.google.gson.annotations.SerializedName
 
 class User : Resource() {

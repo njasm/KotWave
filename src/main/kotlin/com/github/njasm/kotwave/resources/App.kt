@@ -1,4 +1,4 @@
-package com.github.njasm.soundcloud.resources
+package com.github.njasm.kotwave.resources
 
 import com.google.gson.annotations.SerializedName
 
@@ -34,5 +34,5 @@ class App : Resource() {
   "uri": "https://api.soundcloud.com/apps/124",
   "permalink_url": "http://soundcloud.com/apps/iphone",
   "external_url": "http://itunes.com/app/soundcloud",
-  "creator": "soundcloud"
+  "creator": "kotwave"
  */

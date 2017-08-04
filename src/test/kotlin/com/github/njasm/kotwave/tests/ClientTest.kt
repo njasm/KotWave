@@ -2,13 +2,12 @@
  * Created by njasm on 04/07/2017.
  */
 
-package com.github.njasm.soundcloud.tests
+package com.github.njasm.kotwave.tests
 
 import com.github.kittinunf.result.Result
-import com.github.njasm.soundcloud.API_BASE_URL
-import com.github.njasm.soundcloud.API_ME_RESOURCE
-import com.github.njasm.soundcloud.pathCombine
-import com.github.njasm.soundcloud.resources.Track
+import com.github.njasm.kotwave.API_BASE_URL
+import com.github.njasm.kotwave.API_ME_RESOURCE
+import com.github.njasm.kotwave.pathCombine
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.Assert
@@ -65,7 +64,7 @@ class ClientTest : Base() {
 
     @Ignore("not yet ready") @Test fun resolve()
     {
-        val value = t.resolve("https://soundcloud.com/hybrid-species")
+        val value = t.resolve("https://kotwave.com/hybrid-species")
         Assert.assertNotNull(value)
     }
 
@@ -90,6 +89,7 @@ class ClientTest : Base() {
         val list = t.playlistsOf(uId)
         list.forEach {
             println("track count #" + it.trackCount)
+            it.tracks().forEach { println("track title:" + it.title) }
             println("playlist id #" + it.id)
             Assert.assertEquals(uId, it.user.id)
         }

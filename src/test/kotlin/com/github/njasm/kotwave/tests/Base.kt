@@ -1,6 +1,6 @@
-package com.github.njasm.soundcloud.tests
+package com.github.njasm.kotwave.tests
 
-import com.github.njasm.soundcloud.Client
+import com.github.njasm.kotwave.Client
 import org.junit.Before
 
 

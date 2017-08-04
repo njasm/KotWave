@@ -2,9 +2,9 @@
  * Created by njasm on 02/07/2017.
  */
 
-package com.github.njasm.soundcloud
+package com.github.njasm.kotwave
 
-import com.github.njasm.soundcloud.resources.*
+import com.github.njasm.kotwave.resources.*
 
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Request
@@ -14,7 +14,7 @@ import com.github.kittinunf.fuel.httpHead
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.httpPut
 import com.github.kittinunf.result.Result
-import com.github.njasm.soundcloud.resources.utils.UserCollection
+import com.github.njasm.kotwave.resources.utils.UserCollection
 
 class Client(val clientID: String, val secret: String, val callback: String = "") {
 
@@ -216,7 +216,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         pList.forEach { p ->
             p.client = this
             p.user.client = this
-            p.tracks.forEach { t -> t.client = this }
+            p.tracks().forEach { t -> t.client = this }
         }
 
         return pList

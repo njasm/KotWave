@@ -1,5 +1,6 @@
-package com.github.njasm.soundcloud.resources
+package com.github.njasm.kotwave.resources
 
+import com.github.njasm.kotwave.throwIf
 import com.google.gson.annotations.SerializedName
 
 class Playlist : Resource() {
@@ -54,7 +55,17 @@ class Playlist : Resource() {
     var artworkUrl : String = ""
 
     var user : User = User()
-    var tracks : Array<Track> = emptyArray()
+    @SerializedName("tracks")
+    private var _tracks : ArrayList<Track> = ArrayList()
+
+    fun tracks() : Array<Track> = _tracks.toTypedArray()
+    fun tracks(track : Track)
+    {
+        throwIf<IllegalArgumentException>(
+                "track must be already in kotwave. this is a new track.") { track.id <= 0 }
+
+        if (!_tracks.any { it.id == track.id }) _tracks.add(track)
+    }
 
     override fun save() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
