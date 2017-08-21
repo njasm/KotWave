@@ -7,7 +7,7 @@ package com.github.njasm.kotwave
 // RFC 2616
 const val HTTP_HEADER_VALUE_DELIMITER : String = ","
 
-const val API_BASE_URL : String = "https://api.kotwave.com"
+const val API_BASE_URL : String = "https://api.soundcloud.com"
 const val API_CONNECT_PATH : String = "connect"
 const val API_TOKEN_PATH : String = "oauth2/token"
 
