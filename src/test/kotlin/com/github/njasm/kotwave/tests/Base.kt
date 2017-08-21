@@ -16,6 +16,7 @@ open class Base {
         val password : String = System.getenv("KOTWAVE_PASSWORD").orEmpty()
 
         t = Client(clientID, clientSecret)
+        t.setReadTimeout(60000)
         t.clientCredentialsAuthentication(username, password)
 
         Thread.sleep(2000L)

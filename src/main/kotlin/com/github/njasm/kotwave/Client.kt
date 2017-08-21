@@ -23,7 +23,13 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     internal lateinit var lastRequest : Request
     internal lateinit var lastResponse : Response
 
+    internal var defaultReadTimeout : Int = 60000
+
     constructor(clientID: String, secret: String) : this(clientID, secret, "")
+
+    fun setReadTimeout(milliseconds : Int) {
+        defaultReadTimeout = milliseconds
+    }
 
     fun clientCredentialsAuthentication(user: String, passwd: String)
     {
@@ -71,7 +77,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     fun get(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
     ) : Triple<Request, Response, Result<String, FuelError>>
     {
-        val req = url.httpGet(params.toList())
+        val req = url.httpGet(params.toList()).timeoutRead(defaultReadTimeout)
         req.apply {
             header("Accept" to "application/json")
             headers.forEach { header(it) }
@@ -86,7 +92,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     fun post(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
     ) : Triple<Request, Response, Result<String, FuelError>>
     {
-        val req = url.httpPost()
+        val req = url.httpPost().timeoutRead(defaultReadTimeout)
         headers.forEach { req.header(it) }
         guardAgainstExpiredToken()
         auth.addOauthHeader(req)
@@ -100,7 +106,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     fun put(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
     ) : Triple<Request, Response, Result<String, FuelError>>
     {
-        val req = url.httpPut()
+        val req = url.httpPut().timeoutRead(defaultReadTimeout)
         headers.forEach { req.header(it) }
         guardAgainstExpiredToken()
         auth.addOauthHeader(req)
@@ -113,7 +119,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
 
     fun head(url: String, headers: Set<Pair<String, Any>> = emptySet()
     ) : Triple<Request, Response, Result<String, FuelError>> = url.httpHead().let { req ->
-
+            req.timeoutRead(defaultReadTimeout)
             headers.forEach { h -> req.header(h) }
             guardAgainstExpiredToken()
             auth.addOauthHeader(req)
