@@ -13,6 +13,7 @@ jobs:
       uses: actions/setup-java@v1.3.0
       with:
         java-version: 1.8
+    - name: Set up env vars
       env:
         KOTWAVE_CLIENTID: ${{ secrets.KOTWAVE_CLIENTID }}
         KOTWAVE_CLIENT_SECRET: ${{ secrets.KOTWAVE_CLIENT_SECRET }}
