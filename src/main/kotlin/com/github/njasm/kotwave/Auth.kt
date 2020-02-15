@@ -22,7 +22,7 @@ internal class Auth(internal var token: Token) {
     fun addOauthHeader(req: Request)
     {
         if (tokenIsNotEmpty()
-            && !req.httpHeaders.containsKey("Authorization")
+            && !req.headers.containsKey("Authorization")
             && !isTokenExpired())
         {
             req.header("Authorization" to "OAuth " + this.accessToken.trim())

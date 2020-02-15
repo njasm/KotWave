@@ -245,10 +245,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         val fullUrl = API_BASE_URL.pathCombine(API_RESOLVE_RESOURCE)
         val (_, response, result) = this.get(fullUrl, mutableSetOf("url" to uri, "client_id" to this.clientID))
         return when(result) {
-            is Result.Success ->
-                if (response.httpResponseHeaders.containsKey("Location"))
-                    response.httpResponseHeaders["Location"]!!.first()
-                else null
+            is Result.Success -> response.headers["Location"]?.first()
             else -> null
         }
     }

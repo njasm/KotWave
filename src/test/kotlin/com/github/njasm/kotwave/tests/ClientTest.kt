@@ -74,11 +74,11 @@ class ClientTest : Base() {
         when(r) {
             is Result.Failure -> assert(false)
             else -> {
-                response.httpResponseHeaders.forEach {
+                response.headers.forEach {
                     println("key: ${it.key}, value: ${it.value}")
                 }
 
-                Assert.assertTrue(response.httpResponseHeaders.isNotEmpty())
+                Assert.assertTrue(response.headers.isNotEmpty())
             }
         }
     }
