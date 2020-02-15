@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/njasm/KotWave.svg?branch=master)](https://travis-ci.org/njasm/KotWave)
-[![Github](https://github.com/njasm/KotWave/workflows/Gradle%20Build/badge.svg?branch=master)
-[![codecov](https://codecov.io/gh/njasm/KotWave/branch/master/graph/badge.svg)](https://codecov.io/gh/njasm/KotWave) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Github](https://github.com/njasm/KotWave/workflows/Gradle%20Build/badge.svg?branch=master)](https://github.com/njasm/KotWave/workflows/Gradle%20Build/badge.svg?branch=master) [![codecov](https://codecov.io/gh/njasm/KotWave/branch/master/graph/badge.svg)](https://codecov.io/gh/njasm/KotWave) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## KotWave - Kotlin's Soundcloud.com API client
 
