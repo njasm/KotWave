@@ -14,13 +14,13 @@ import org.junit.Assert
 
 class ClientTest : Base() {
 
-    @Test fun clientCredentialsAuthentication()
-    {
+    @Test
+    fun clientCredentialsAuthentication() {
         Assert.assertTrue(t.auth.accessToken.isNotEmpty())
     }
 
-    @Test fun factoryMethods()
-    {
+    @Test
+    fun factoryMethods() {
         val track = t.factoryTrack()
         val conn = t.factoryConnection()
         val com = t.factoryComment()
@@ -34,8 +34,8 @@ class ClientTest : Base() {
         Assert.assertEquals(com.client, t)
     }
 
-    @Test fun getMe()
-    {
+    @Test
+    fun getMe() {
         val user = t.me()
         println(user.client.auth.accessToken)
         println(user.id)
@@ -46,32 +46,33 @@ class ClientTest : Base() {
         Assert.assertTrue(user.client.auth.accessToken.isNotEmpty())
     }
 
-    @Test fun tracksOf()
-    {
+    @Test
+    fun tracksOf() {
         val tracks = t.tracksOf(t.me().id)
         tracks.forEach { println("name: ${it.title}") }
 
         Assert.assertTrue(tracks.isNotEmpty())
     }
 
-    @Test fun commentsOf()
-    {
+    @Test
+    fun commentsOf() {
         val comments = t.commentsOf(t.me().id)
         comments.forEach { println("name: ${it.body}") }
 
         Assert.assertTrue(comments.isNotEmpty())
     }
 
-    @Ignore("not yet ready") @Test fun resolve()
-    {
+    @Ignore("not yet ready")
+    @Test
+    fun resolve() {
         val value = t.resolve("https://kotwave.com/hybrid-species")
         Assert.assertNotNull(value)
     }
 
-    @Test fun getHead()
-    {
+    @Test
+    fun getHead() {
         val (_, response, r) = t.head(API_BASE_URL.pathCombine(API_ME_RESOURCE))
-        when(r) {
+        when (r) {
             is Result.Failure -> assert(false)
             else -> {
                 response.headers.forEach {
@@ -83,8 +84,8 @@ class ClientTest : Base() {
         }
     }
 
-    @Test fun userPlaylists()
-    {
+    @Test
+    fun userPlaylists() {
         val uId = t.me().id
         val list = t.playlistsOf(uId)
         list.forEach {
@@ -97,8 +98,8 @@ class ClientTest : Base() {
         Assert.assertTrue(list.isNotEmpty())
     }
 
-    @Test fun playlistbyId()
-    {
+    @Test
+    fun playlistbyId() {
         val pId = 116663048
         val playlist = t.playlistOf(pId)
         playlist?.let {
@@ -110,8 +111,8 @@ class ClientTest : Base() {
     }
 
     @Ignore("FIXME: lately and randomly we're getting {\"error\":\"invalid_grant\"} for this test")
-    @Test fun refreshToken()
-    {
+    @Test
+    fun refreshToken() {
         val token = t.auth.accessToken
         val rToken = t.auth.refreshToken
 

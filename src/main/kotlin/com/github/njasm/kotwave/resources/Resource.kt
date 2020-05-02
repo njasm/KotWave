@@ -7,9 +7,9 @@ package com.github.njasm.kotwave.resources
 import com.github.njasm.kotwave.Client
 
 abstract class Resource {
-    internal var kind : String = ""
+    internal var kind: String = ""
 
-    internal lateinit var client : Client
+    internal lateinit var client: Client
 
     abstract fun save()
     abstract fun update()

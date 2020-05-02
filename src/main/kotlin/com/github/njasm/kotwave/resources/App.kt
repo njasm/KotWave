@@ -4,14 +4,16 @@ import com.google.gson.annotations.SerializedName
 
 class App : Resource() {
 
-    var id : Int = 0
-    lateinit var name : String
-    lateinit var uri : String
+    var id: Int = 0
+    lateinit var name: String
+    lateinit var uri: String
+
     @SerializedName("permalink_url")
-    lateinit var permalinkUrl : String
+    lateinit var permalinkUrl: String
+
     @SerializedName("external_url")
-    lateinit var externalUrl : String
-    lateinit var creator : String
+    lateinit var externalUrl: String
+    lateinit var creator: String
 
     override fun save() {
         throw UnsupportedOperationException("You cannot save an App resource")

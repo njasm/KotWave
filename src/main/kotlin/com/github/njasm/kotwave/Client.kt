@@ -18,28 +18,28 @@ import com.github.njasm.kotwave.resources.utils.UserCollection
 
 class Client(val clientID: String, val secret: String, val callback: String = "") {
 
-    internal val auth : Auth = Auth(Token())
+    internal val auth: Auth = Auth(Token())
 
-    internal lateinit var lastRequest : Request
-    internal lateinit var lastResponse : Response
+    internal lateinit var lastRequest: Request
+    internal lateinit var lastResponse: Response
 
-    internal var defaultReadTimeout : Int = 60000
+    internal var defaultReadTimeout: Int = 60000
 
     constructor(clientID: String, secret: String) : this(clientID, secret, "")
 
-    fun setReadTimeout(milliseconds : Int) {
+    fun setReadTimeout(milliseconds: Int) {
         defaultReadTimeout = milliseconds
     }
 
-    fun clientCredentialsAuthentication(user: String, passwd: String)
-    {
+    fun clientCredentialsAuthentication(user: String, passwd: String) {
         val body = setOf(
-                "grant_type" to "password",
-                "scope" to "non-expiring", // "*",
-                "username" to user,
-                "password" to passwd,
-                "client_id" to this.clientID,
-                "client_secret" to this.secret)
+            "grant_type" to "password",
+            "scope" to "non-expiring", // "*",
+            "username" to user,
+            "password" to passwd,
+            "client_id" to this.clientID,
+            "client_secret" to this.secret
+        )
 
         val header = setOf("Content-Type" to "application/x-www-form-urlencoded")
         val (_, _, result) = this.post(API_BASE_URL.pathCombine(API_TOKEN_PATH), body, header)
@@ -48,14 +48,14 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         auth.token = newToken
     }
 
-    fun refreshAccessToken(refreshToken : String?)
-    {
+    fun refreshAccessToken(refreshToken: String?) {
         val body = setOf(
-                "grant_type" to "refresh_token",
-                "redirect_uri" to callback,
-                "client_id" to clientID,
-                "client_secret" to secret,
-                "refresh_token" to (refreshToken ?: auth.refreshToken.orEmpty()))
+            "grant_type" to "refresh_token",
+            "redirect_uri" to callback,
+            "client_id" to clientID,
+            "client_secret" to secret,
+            "refresh_token" to (refreshToken ?: auth.refreshToken.orEmpty())
+        )
 
         val header = setOf("Content-Type" to "application/x-www-form-urlencoded")
         val (_, _, result) = this.post(API_BASE_URL.pathCombine(API_TOKEN_PATH), body, header)
@@ -64,8 +64,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         auth.token = newToken
     }
 
-    fun me() : User
-    {
+    fun me(): User {
         val (_, _, result) = this.get(API_BASE_URL.pathCombine(API_ME_RESOURCE))
         val u = processResponseString(result, User::class.java)
         u.client = this
@@ -74,9 +73,9 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     }
 
     @JvmOverloads
-    fun get(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
-    ) : Triple<Request, Response, Result<String, FuelError>>
-    {
+    fun get(
+        url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
+    ): Triple<Request, Response, Result<String, FuelError>> {
         val req = url.httpGet(params.toList()).timeoutRead(defaultReadTimeout)
         req.apply {
             header("Accept" to "application/json")
@@ -89,11 +88,12 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return doRequest(req)
     }
 
-    fun post(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
-    ) : Triple<Request, Response, Result<String, FuelError>>
-    {
+    fun post(
+        url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
+    ): Triple<Request, Response, Result<String, FuelError>> {
         val req = url.httpPost().timeoutRead(defaultReadTimeout)
         headers.forEach { req.header(it) }
+        req.header("User-Agent" to "SoundCloud Python API Wrapper 0.5.0")
         guardAgainstExpiredToken()
         auth.addOauthHeader(req)
 
@@ -103,9 +103,9 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return doRequest(req)
     }
 
-    fun put(url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
-    ) : Triple<Request, Response, Result<String, FuelError>>
-    {
+    fun put(
+        url: String, params: Set<Pair<String, Any>> = emptySet(), headers: Set<Pair<String, Any>> = emptySet()
+    ): Triple<Request, Response, Result<String, FuelError>> {
         val req = url.httpPut().timeoutRead(defaultReadTimeout)
         headers.forEach { req.header(it) }
         guardAgainstExpiredToken()
@@ -117,26 +117,26 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return doRequest(req)
     }
 
-    fun head(url: String, headers: Set<Pair<String, Any>> = emptySet()
-    ) : Triple<Request, Response, Result<String, FuelError>> = url.httpHead().let { req ->
-            req.timeoutRead(defaultReadTimeout)
-            headers.forEach { h -> req.header(h) }
-            guardAgainstExpiredToken()
-            auth.addOauthHeader(req)
+    fun head(
+        url: String, headers: Set<Pair<String, Any>> = emptySet()
+    ): Triple<Request, Response, Result<String, FuelError>> = url.httpHead().let { req ->
+        req.timeoutRead(defaultReadTimeout)
+        headers.forEach { h -> req.header(h) }
+        guardAgainstExpiredToken()
+        auth.addOauthHeader(req)
 
-            return doRequest(req)
-        }
+        return doRequest(req)
+    }
 
-    private fun doRequest(req: Request) : Triple<Request, Response, Result<String, FuelError>>
-        = with(req.responseString()) {
+    private fun doRequest(req: Request): Triple<Request, Response, Result<String, FuelError>> =
+        with(req.responseString()) {
             lastRequest = first
             lastResponse = second
 
             return this
         }
 
-    fun tracksOf(userId: Int) : Array<Track>
-    {
+    fun tracksOf(userId: Int): Array<Track> {
         throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
         val fullUrl = API_BASE_URL.pathCombine(API_USERS_RESOURCE, userId, API_TRACKS_RESOURCE)
         val (_, _, result) = this.get(fullUrl)
@@ -146,8 +146,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return tracks
     }
 
-    fun commentsOf(userId: Int) : Array<Comment>
-    {
+    fun commentsOf(userId: Int): Array<Comment> {
         throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
         val fullUrl = API_BASE_URL.pathCombine(API_USERS_RESOURCE, userId, API_COMMENTS_RESOURCE)
         val (_, _, result) = this.get(fullUrl)
@@ -157,8 +156,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return comments
     }
 
-    fun followingsOf(userId: Int) : Array<User>
-    {
+    fun followingsOf(userId: Int): Array<User> {
         throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
         val fullUrl = API_BASE_URL.pathCombine(API_USERS_RESOURCE, userId, API_USER_SUB_FOLLOWINGS_RESOURCE)
         val (_, _, result) = this.get(fullUrl)
@@ -168,8 +166,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return users.values()
     }
 
-    fun followersOf(userId: Int) : Array<User>
-    {
+    fun followersOf(userId: Int): Array<User> {
         throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
         val fullUrl = API_BASE_URL.pathCombine(API_USERS_RESOURCE, userId, API_USER_SUB_FOLLOWERS_RESOURCE)
         val (_, _, result) = this.get(fullUrl)
@@ -179,8 +176,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return users.values()
     }
 
-    fun favoritesOf(userId: Int) : Array<Track>
-    {
+    fun favoritesOf(userId: Int): Array<Track> {
         throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
         val fullUrl = API_BASE_URL.pathCombine(API_USERS_RESOURCE, userId, API_USER_SUB_FAVORITES_RESOURCE)
         val (_, _, result) = this.get(fullUrl)
@@ -190,8 +186,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return t
     }
 
-    fun connectionsOf(userId: Int) : Array<Connection>
-    {
+    fun connectionsOf(userId: Int): Array<Connection> {
         throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
         val fullUrl = API_BASE_URL.pathCombine(API_CONNECTIONS_RESOURCE)
         val (_, _, result) = this.get(fullUrl)
@@ -201,8 +196,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return c
     }
 
-    fun appsOf(userId : Int) : Array<App>
-    {
+    fun appsOf(userId: Int): Array<App> {
         throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
         val fullUrl = API_BASE_URL.pathCombine(API_APPS_RESOURCE)
         val (_, _, result) = this.get(fullUrl)
@@ -212,8 +206,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return a
     }
 
-    fun playlistsOf(userId : Int) : Array<Playlist>
-    {
+    fun playlistsOf(userId: Int): Array<Playlist> {
         throwIf<IllegalArgumentException>("User ID cannot be negative or zero.") { userId <= 0 }
         val url = API_BASE_URL.pathCombine(API_USERS_RESOURCE, userId, API_PLAYLISTS_RESOURCE)
         val (_, _, result) = get(url)
@@ -228,8 +221,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return pList
     }
 
-    fun playlistOf(playlistId : Int) : Playlist?
-    {
+    fun playlistOf(playlistId: Int): Playlist? {
         throwIf<IllegalArgumentException>("Playlist ID cannot be negative or zero.") { playlistId <= 0 }
         val url = API_BASE_URL.pathCombine(API_PLAYLISTS_RESOURCE, playlistId)
         val (_, _, result) = get(url)
@@ -240,23 +232,21 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
         return p
     }
 
-    fun resolve(uri: String) : String?
-    {
+    fun resolve(uri: String): String? {
         val fullUrl = API_BASE_URL.pathCombine(API_RESOLVE_RESOURCE)
         val (_, response, result) = this.get(fullUrl, mutableSetOf("url" to uri, "client_id" to this.clientID))
-        return when(result) {
+        return when (result) {
             is Result.Success -> response.headers["Location"]?.first()
             else -> null
         }
     }
 
-    fun factoryTrack() : Track = (Track()).let { it.client = this; return it }
-    fun factoryComment() : Comment = (Comment()).let { it.client = this; return it }
-    fun factoryConnection() : Comment = (Comment()).let { it.client = this; return it }
+    fun factoryTrack(): Track = (Track()).let { it.client = this; return it }
+    fun factoryComment(): Comment = (Comment()).let { it.client = this; return it }
+    fun factoryConnection(): Comment = (Comment()).let { it.client = this; return it }
 
     private inline fun <reified T : Any, V : Any, E : Exception>
-            processResponseString(result: Result<V, E>, returnType: Class<T>) : T
-    {
+            processResponseString(result: Result<V, E>, returnType: Class<T>): T {
         return when (result) {
             is Result.Failure -> {
                 println("ERROR HTTP RESPONSE BODY: ${lastResponse.data.toString(Charsets.UTF_8)}")
@@ -267,5 +257,5 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     }
 
     private fun guardAgainstExpiredToken() =
-            if (auth.isTokenExpired()) refreshAccessToken(null) else Unit
+        if (auth.isTokenExpired()) refreshAccessToken(null) else Unit
 }

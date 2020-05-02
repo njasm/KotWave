@@ -4,18 +4,22 @@ import com.google.gson.annotations.SerializedName
 
 class Connection : Resource() {
 
-    var id : Int = 0
+    var id: Int = 0
+
     @SerializedName("created_at")
-    lateinit var createdAt : String
+    lateinit var createdAt: String
+
     @SerializedName("display_name")
-    lateinit var displayName : String
+    lateinit var displayName: String
+
     @SerializedName("post_favorite")
-    var postFavorite : Boolean = false
+    var postFavorite: Boolean = false
+
     @SerializedName("post_publish")
-    var postPublish : Boolean = false
-    lateinit var service : String
-    lateinit var type : String
-    var uri : String = ""
+    var postPublish: Boolean = false
+    lateinit var service: String
+    lateinit var type: String
+    var uri: String = ""
 
     override fun save() {
         TODO("not implemented")

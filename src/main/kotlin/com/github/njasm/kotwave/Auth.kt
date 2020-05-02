@@ -8,7 +8,7 @@ import com.github.kittinunf.fuel.core.Request
 import java.util.*
 
 internal class Auth(internal var token: Token) {
-    internal var dataDate : Calendar = Calendar.getInstance()
+    internal var dataDate: Calendar = Calendar.getInstance()
 
     val accessToken
         get() = this.token.access_token
@@ -19,19 +19,17 @@ internal class Auth(internal var token: Token) {
     val refreshToken
         get() = this.token.refresh_token
 
-    fun addOauthHeader(req: Request)
-    {
+    fun addOauthHeader(req: Request) {
         if (tokenIsNotEmpty()
             && !req.headers.containsKey("Authorization")
-            && !isTokenExpired())
-        {
+            && !isTokenExpired()
+        ) {
             req.header("Authorization" to "OAuth " + this.accessToken.trim())
         }
     }
 
-    fun isTokenExpired() : Boolean
-    {
-        when(this.getExpiresIn()) {
+    fun isTokenExpired(): Boolean {
+        when (this.getExpiresIn()) {
             null -> return false
             else -> {
                 dataDate.add(Calendar.SECOND, getExpiresIn()!!)
@@ -40,13 +38,13 @@ internal class Auth(internal var token: Token) {
         }
     }
 
-    private fun getExpiresIn() : Int? = this.token.expires_in
-    private fun tokenIsNotEmpty() : Boolean = this.accessToken.isNotEmpty()
-
+    private fun getExpiresIn(): Int? = this.token.expires_in
+    private fun tokenIsNotEmpty(): Boolean = this.accessToken.isNotEmpty()
 }
 
 internal data class Token(
-        val access_token : String = "",
-        val scope : String = "",
-        val expires_in : Int? = null,
-        val refresh_token : String? = null)
+    val access_token: String = "",
+    val scope: String = "",
+    val expires_in: Int? = null,
+    val refresh_token: String? = null
+)

@@ -12,19 +12,21 @@ import org.junit.Assert
 
 class AuthTest {
 
-    internal lateinit var t : Auth
+    internal lateinit var t: Auth
 
-    @Before fun init()
-    {
+    @Before
+    fun init() {
         t = Auth(Token())
     }
 
-    @Test fun scopeIsEmpty() = Assert.assertEquals(t.tokenScope, "")
+    @Test
+    fun scopeIsEmpty() = Assert.assertEquals(t.tokenScope, "")
 
-    @Test fun tokenExpiredFalse() = Assert.assertFalse(t.isTokenExpired())
+    @Test
+    fun tokenExpiredFalse() = Assert.assertFalse(t.isTokenExpired())
 
-    @Test fun tokenExpiredTrue()
-    {
+    @Test
+    fun tokenExpiredTrue() {
         val rt = "r"
         var a = Auth(Token("a", "*", 1, rt))
         Thread.sleep(2000)

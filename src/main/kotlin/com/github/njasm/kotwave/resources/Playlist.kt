@@ -5,64 +5,78 @@ import com.google.gson.annotations.SerializedName
 
 class Playlist : Resource() {
 
-    val id : Int = 0
+    val id: Int = 0
+
     @SerializedName("created_at")
-    lateinit var createdAt : String
+    lateinit var createdAt: String
 
     @SerializedName("user_id")
-    var userId : Int = 0
-    var duration : Int = 0
+    var userId: Int = 0
+    var duration: Int = 0
 
-    var sharing : String = ""
+    var sharing: String = ""
+
     @SerializedName("tag_list")
-    lateinit var tagList : String
-    lateinit var permalink : String
+    lateinit var tagList: String
+    lateinit var permalink: String
 
     @SerializedName("track_count")
-    var trackCount : Int = 0
+    var trackCount: Int = 0
 
-    var streamable : Boolean = false
-    var downloadable : Boolean = false
+    var streamable: Boolean = false
+    var downloadable: Boolean = false
+
     @SerializedName("embeddable_by")
-    var embeddableBy : String = ""
+    var embeddableBy: String = ""
+
     @SerializedName("purchase_url")
-    var purchaseUrl : String? = null
+    var purchaseUrl: String? = null
+
     @SerializedName("label_id")
-    var labelId : Int? = null
-    var type : String = ""
+    var labelId: Int? = null
+    var type: String = ""
+
     @SerializedName("playlist_type")
-    var playlistType : String = ""
-    var ean : String = ""
-    var description : String = ""
-    var genre : String = ""
-    var release : String = ""
+    var playlistType: String = ""
+    var ean: String = ""
+    var description: String = ""
+    var genre: String = ""
+    var release: String = ""
+
     @SerializedName("purchase_title")
-    var purchaseTitle : String? = null
+    var purchaseTitle: String? = null
+
     @SerializedName("label_name")
-    var labelName : String = ""
-    var title : String = ""
+    var labelName: String = ""
+    var title: String = ""
+
     @SerializedName("release_year")
-    var releaseYear : String? = null
+    var releaseYear: String? = null
+
     @SerializedName("release_month")
-    var releaseMonth : String? = null
+    var releaseMonth: String? = null
+
     @SerializedName("release_day")
-    var releaseDay : String? = null
-    var license : String = ""
-    var uri : String = ""
+    var releaseDay: String? = null
+    var license: String = ""
+    var uri: String = ""
+
     @SerializedName("permalink_url")
-    var permalinkUrl : String = ""
+    var permalinkUrl: String = ""
+
     @SerializedName("artwork_url")
-    var artworkUrl : String = ""
+    var artworkUrl: String = ""
 
-    var user : User = User()
+    var user: User = User()
+
     @SerializedName("tracks")
-    private var _tracks : ArrayList<Track> = ArrayList()
+    private var _tracks: ArrayList<Track> = ArrayList()
 
-    fun tracks() : Array<Track> = _tracks.toTypedArray()
-    fun tracks(track : Track)
-    {
+    fun tracks(): Array<Track> = _tracks.toTypedArray()
+    fun tracks(track: Track) {
         throwIf<IllegalArgumentException>(
-                "track must be already in kotwave. this is a new track.") { track.id <= 0 }
+            "track must be already in kotwave. this is a new track."
+        ) { track.id <= 0 }
 
         if (!_tracks.any { it.id == track.id }) _tracks.add(track)
     }

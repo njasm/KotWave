@@ -6,76 +6,87 @@ import com.google.gson.annotations.SerializedName
 
 class User : Resource() {
 
-    val id : Int = 0
-    lateinit var permalink : String
-    lateinit var username : String
-    lateinit var uri : String
+    val id: Int = 0
+    lateinit var permalink: String
+    lateinit var username: String
+    lateinit var uri: String
+
     @SerializedName("permalink_url")
-    lateinit var permalinkUrl : String             // RO 	URL to the SoundCloud.com page 	"http://soundcloud.com/bryan/sbahn-sounds"
+    lateinit var permalinkUrl: String             // RO 	URL to the SoundCloud.com page 	"http://soundcloud.com/bryan/sbahn-sounds"
+
     @SerializedName("avatar_url")
-    lateinit var avatarUrl : String                // RO 	URL to a JPEG image 	"http://i1.sndcdn.com/avatars-000011353294-n0axp1-large.jpg"
-    lateinit var country : String                   // RO 	country 	"Germany"
+    lateinit var avatarUrl: String                // RO 	URL to a JPEG image 	"http://i1.sndcdn.com/avatars-000011353294-n0axp1-large.jpg"
+    lateinit var country: String                   // RO 	country 	"Germany"
+
     @SerializedName("full_name")
-    lateinit var fullName : String                 // RO 	first and last name 	"Tom Wilson"
-    lateinit var city : String                      // RO 	city 	"Berlin"
-    lateinit var description : String 	            // RW 	description 	"Buskers playing in the S-Bahn station in Berlin"
+    lateinit var fullName: String                 // RO 	first and last name 	"Tom Wilson"
+    lateinit var city: String                      // RO 	city 	"Berlin"
+    lateinit var description: String                // RW 	description 	"Buskers playing in the S-Bahn station in Berlin"
+
     @SerializedName("discogs-name")
-    lateinit var discogsName : String	            // RO 	Discogs name 	"myrandomband"
+    lateinit var discogsName: String                // RO 	Discogs name 	"myrandomband"
+
     @SerializedName("myspace-name")
-    lateinit var myspaceName : String              //	RO 	MySpace name 	"myrandomband"
-    lateinit var website : String                   //	RW 	a URL to the website 	"http://facebook.com/myrandomband"
+    lateinit var myspaceName: String              //	RO 	MySpace name 	"myrandomband"
+    lateinit var website: String                   //	RW 	a URL to the website 	"http://facebook.com/myrandomband"
+
     @SerializedName("website-title")
-    lateinit var websiteTitle : String             // 	RW 	a custom title for the website 	"myrandomband on Facebook"
-    lateinit var online : String                    // 	RO 	online status (boolean) 	true
+    lateinit var websiteTitle: String             // 	RW 	a custom title for the website 	"myrandomband on Facebook"
+    lateinit var online: String                    // 	RO 	online status (boolean) 	true
+
     @SerializedName("track_count")
-    lateinit var trackCount : String               // 	RO 	number of public tracks 	4
+    lateinit var trackCount: String               // 	RO 	number of public tracks 	4
+
     @SerializedName("playlist_count")
-    lateinit var playlistCount : String            // 	RO 	number of public playlists 	5
+    lateinit var playlistCount: String            // 	RO 	number of public playlists 	5
+
     @SerializedName("followers_count")
-    lateinit var followersCount : String           // 	RO 	number of followers 	54
+    lateinit var followersCount: String           // 	RO 	number of followers 	54
+
     @SerializedName("followings_count")
-    lateinit var followingsCount : String          // 	RO 	number of followed users 	75
+    lateinit var followingsCount: String          // 	RO 	number of followed users 	75
+
     @SerializedName("public_favorites_count")
-    lateinit var publicFavoritesCount : String    // 	RO 	number of favorited public tracks 	7
+    lateinit var publicFavoritesCount: String    // 	RO 	number of favorited public tracks 	7
+
     @SerializedName("avatar_data")
-    lateinit var avatarData : String               // 	WO 	binary data of user avatar 	(only for uploading)
+    lateinit var avatarData: String               // 	WO 	binary data of user avatar 	(only for uploading)
 
     override fun save() = throw UnsupportedOperationException("")
     override fun delete() = throw UnsupportedOperationException("")
     override fun update() = Unit
 
-    fun tracks() : Array<Track> {
-        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+    fun tracks(): Array<Track> {
+        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") { this.id <= 0 }
         return this.client.tracksOf(this.id)
     }
 
-    fun comments() : Array<Comment> {
-        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+    fun comments(): Array<Comment> {
+        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") { this.id <= 0 }
         return this.client.commentsOf(this.id)
     }
 
-    fun followings() : Array<User> {
-        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+    fun followings(): Array<User> {
+        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") { this.id <= 0 }
         return this.client.followingsOf(this.id)
     }
 
-    fun followers() : Array<User> {
-        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+    fun followers(): Array<User> {
+        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") { this.id <= 0 }
         return this.client.followersOf(this.id)
     }
 
-    fun playlists() : Array<Playlist> {
-        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+    fun playlists(): Array<Playlist> {
+        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") { this.id <= 0 }
         return this.client.playlistsOf(this.id)
     }
 
-    fun follow(userId : Int)
-    {
-        throwIf<IllegalArgumentException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
-        throwIf<IllegalArgumentException>("userId is not valid.") {userId <= 0}
+    fun follow(userId: Int) {
+        throwIf<IllegalArgumentException>("${this.javaClass.name} is not loaded.") { this.id <= 0 }
+        throwIf<IllegalArgumentException>("userId is not valid.") { userId <= 0 }
         val url = API_BASE_URL.pathCombine(API_USERS_RESOURCE, this.id, API_USER_SUB_FOLLOWERS_RESOURCE, userId)
         val (_, _, result) = this.client.put(url)
-        when(result) {
+        when (result) {
             is Result.Failure -> throw result.error
             else -> return Unit
         }
@@ -97,18 +108,18 @@ class User : Resource() {
 //
 //    }
 
-    fun favorites() : Array<Track> {
-        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+    fun favorites(): Array<Track> {
+        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") { this.id <= 0 }
         return this.client.favoritesOf(this.id)
     }
 
-    fun connections() : Array<Connection> {
-        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+    fun connections(): Array<Connection> {
+        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") { this.id <= 0 }
         return this.client.connectionsOf(this.id)
     }
 
-    fun apps() : Array<App> {
-        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") {this.id <= 0}
+    fun apps(): Array<App> {
+        throwIf<IllegalStateException>("${this.javaClass.name} is not loaded.") { this.id <= 0 }
         return this.client.appsOf(this.id)
     }
 }
