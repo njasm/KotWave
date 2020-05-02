@@ -39,6 +39,7 @@ class UserTest : Base() {
         Assert.assertTrue(followers.isNotEmpty())
     }
 
+    @Ignore("FIXME: Intermittent errors 401 - Unauthorized")
     @Test
     fun favorites() {
         val favs = t.me().favorites()
