@@ -93,7 +93,6 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     ): Triple<Request, Response, Result<String, FuelError>> {
         val req = url.httpPost().timeoutRead(defaultReadTimeout)
         headers.forEach { req.header(it) }
-        req.header("User-Agent" to "SoundCloud Python API Wrapper 0.5.0")
         guardAgainstExpiredToken()
         auth.addOauthHeader(req)
 
@@ -129,7 +128,7 @@ class Client(val clientID: String, val secret: String, val callback: String = ""
     }
 
     private fun doRequest(req: Request): Triple<Request, Response, Result<String, FuelError>> =
-        with(req.responseString()) {
+        with(req.header("User-Agent" to KOTWAVE_LIBRARY_USER_AGENT).responseString()) {
             lastRequest = first
             lastResponse = second
 

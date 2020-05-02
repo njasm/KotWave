@@ -4,6 +4,8 @@
 
 package com.github.njasm.kotwave
 
+const val KOTWAVE_LIBRARY_USER_AGENT = "KotWave - SoundCloud Kotlin API Wrapper"
+
 // RFC 2616
 const val HTTP_HEADER_VALUE_DELIMITER: String = ","
 
